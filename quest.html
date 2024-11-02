@@ -4,15 +4,24 @@
     <title>My Quests</title>
     <meta charset="UTF-8">
     <!-- Include Custom CSS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Replace 'Open Sans' with your desired font -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <!-- Navigation Bar -->
     <nav id="navbar">
-        <ul>
-            <li><a href="index.html">Map</a></li>
-            <li><a href="quest.html">Quest</a></li>
-        </ul>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="logo.png" alt="Logo">
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html">Map</a></li>
+                <li><a href="quest.html">Quest</a></li>
+            </ul>
+        </div>
     </nav>
 
     <!-- Quest List -->

@@ -1,38 +1,85 @@
+/* Reset default margins and padding */
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif; /* Apply the new font */
+}
+
 /* Navigation Bar Styles */
 #navbar {
-    background-color: #333;
-    overflow: hidden;
+    background-color: #fcfeff; /* Very light color */
     position: sticky;
     top: 0;
     z-index: 1000;
+    border-bottom: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Added shadow */
 }
 
-#navbar ul {
-    list-style-type: none;
+/* Container for logo and menu */
+.nav-container {
+    display: flex;
+    align-items: center; /* Center items vertically */
+    justify-content: space-between;
+    height: 60px;
+    padding: 0 30px; /* Increased right padding to add space */
+}
+
+/* Logo Styles */
+.logo {
+    display: flex;
+    align-items: center; /* Center items vertically */
     margin: 0;
     padding: 0;
 }
 
-#navbar li {
-    float: left;
+.logo img {
+    max-height: 80px; /* Ensure the logo fits within the navbar height */
+    margin-left: 10px; /* 10px gap from the left edge */
+    /* Removed transform to prevent scaling issues */
+    /* transform: scale(1.3); */
 }
 
-#navbar li a {
-    display: block;
-    color: #f2f2f2;
-    text-align: center;
-    padding: 14px 20px;
-    text-decoration: none;
-}
-
-#navbar li a:hover {
-    background-color: #ddd;
-    color: black;
-}
-
-/* Adjust body margin */
-body {
+/* Navigation Menu Styles */
+.nav-menu {
+    list-style-type: none;
     margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.nav-menu li {
+    margin-left: 20px;
+}
+
+/* Add margin-right to the last navigation item */
+.nav-menu li:last-child {
+    margin-right: 10px; /* Adjust this value as needed */
+}
+
+.nav-menu li a {
+    display: inline-block;
+    color: #ffffff;
+    text-align: center;
+    padding: 10px 16px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    background-color: #3973b6; /* Default button background color */
+    border: none;
+    border-radius: 10px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Hover effect */
+.nav-menu li a:hover {
+    background-color: #d5d5d5; /* Hover background color */
+    color: #000; /* Hover text color */
+}
+
+/* Active (clicked) effect */
+.nav-menu li a:active {
+    background-color: #c0c0c0; /* Active background color */
+    color: #000; /* Active text color */
 }
 
 /* Search Bar Styles */

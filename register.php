@@ -1,57 +1,39 @@
 <?php
-// Check if form is submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Database credentials
-    $servername = "localhost";
-    $username = "scyruk1_durhack";
-    $password = "Hackathon2k24!";
-    $dbname = "scyruk1_durhack";
+$servername = "localhost";
+$username = "scyruk1_terry";
+$password = "jazzyrain20";
+$dbname = "scyruk1_durhack";
 
-    // Get form data and hash the password
-    $email = $_POST['email'];
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Secure hashing
+// Create connection
+$conn = mysqli_connect($servername, $username, $password, $dbname);
 
-    // Create connection
-    $conn = new mysqli($servername, $username, $password, $dbname);
-
-    // Check connection
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
-    // Prepare and bind
-    $stmt = $conn->prepare("INSERT INTO account (email, password) VALUES (?, ?)");
-    $stmt->bind_param("ss", $email, $password);
-
-    // Execute the statement
-    if ($stmt->execute()) {
-        echo "Registration successful!";
-    } else {
-        echo "Error: " . $stmt->error;
-    }
-
-    // Close connection
-    $stmt->close();
-    $conn->close();
+// Check connection
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
 }
-?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Register</title>
-</head>
-<body>
-    <h2>Register</h2>
-    <form action="register.php" method="post">
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email" required><br><br>
-        
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password" required><br><br>
-        
-        <input type="submit" value="Register">
-    </form>
-</body>
-</html>
+// Check if form was submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Retrieve form data
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $password = mysqli_real_escape_string($conn, $_POST['password']);
+    $username = mysqli_real_escape_string($conn, $_POST['username']);
+    $forename = mysqli_real_escape_string($conn, $_POST['forename']);
+    $surname = mysqli_real_escape_string($conn, $_POST['surname']);
+    
+    // Hash the password (optional but recommended)
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+    // Insert into database
+    $sql = "INSERT INTO account (email, username, forename, surname, password, is_verified, created_at) VALUES ('$email', '$username', '$forename', '$surname', '$hashed_password', 0, NOW())";
+
+    if (mysqli_query($conn, $sql)) {
+        echo "New record created successfully";
+    } else {
+        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+    }
+}
+
+// Close connection
+mysqli_close($conn);
+?>

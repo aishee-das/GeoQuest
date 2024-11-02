@@ -7,6 +7,14 @@ function loadQuests(filterCategory = null) {
     var quests = JSON.parse(localStorage.getItem('quests')) || [];
     var questList = document.getElementById('quests');
 
+    // var quests = [
+    //     { id: 1, name: "Food Adventure", points: 30, category: "Food", info: "Try a new local dish." },
+    //     { id: 2, name: "Mountain Hiking", points: 50, category: "Outdoors", info: "Hike up the mountain trail." },
+    //     { id: 3, name: "Art Museum Visit", points: 20, category: "Culture", info: "Explore the art museum." },
+    //     { id: 4, name: "Nightlife Experience", points: 40, category: "Nightlife", info: "Visit a popular club at night." },
+    //     { id: 5, name: "Community Volunteering", points: 60, category: "Social", info: "Volunteer at a community event." }
+    // ];
+
     // Filter quests by category if filter is applied
     if (filterCategory) {
         quests = quests.filter(quest => quest.category === filterCategory);
@@ -24,42 +32,61 @@ function loadQuests(filterCategory = null) {
     quests.forEach(quest => {
         var listItem = document.createElement('li');
         listItem.className = 'quest-item'; // Add a class to style quest items
-        listItem.onclick = function() { showQuestPopup(quest); }; // **Add click event to open popup**
 
-        var diamond = document.createElement('div'); // Diamond shape
+        // Diamond shape centered
+        var diamondContainer = document.createElement('div');
+        diamondContainer.className = 'diamond-container';
+
+        var diamond = document.createElement('img');
         diamond.className = 'quest-diamond';
+        diamond.src = 'yellow-diamond-precious-stone-or-gem-vector.png'; // Path to your image
+        diamond.alt = 'Quest Icon';
 
-        var questName = document.createElement('span'); // Quest name text
+        diamondContainer.appendChild(diamond);
+        listItem.appendChild(diamondContainer);
+
+        // Quest details container styled as a pop-up
+        var questDetails = document.createElement('div');
+        questDetails.className = 'quest-details';
+
+        var questName = document.createElement('h3');
         questName.className = 'quest-name';
         questName.textContent = quest.name;
 
-        listItem.appendChild(diamond);
-        listItem.appendChild(questName);
+        var questPoints = document.createElement('p');
+        questPoints.textContent = `Points: ${quest.points}`;
+
+        var questInfo = document.createElement('p');
+        questInfo.textContent = quest.info;
+
+        // Buttons
+        var uploadButton = document.createElement('button');
+        uploadButton.textContent = 'Upload Picture';
+
+        var markCompletedButton = document.createElement('button');
+        markCompletedButton.textContent = 'Mark as Completed';
+        markCompletedButton.onclick = function() {
+            completeQuest(quest);
+        };
+
+        var removeButton = document.createElement('button');
+        removeButton.textContent = 'Remove from Quest';
+        removeButton.onclick = function() {
+            removeFromQuest(quest.id);
+        };
+
+        // Append details and buttons to questDetails container
+        questDetails.appendChild(questName);
+        questDetails.appendChild(questPoints);
+        questDetails.appendChild(questInfo);
+        questDetails.appendChild(uploadButton);
+        questDetails.appendChild(markCompletedButton);
+        questDetails.appendChild(removeButton);
+
+        listItem.appendChild(questDetails);
 
         questList.appendChild(listItem);
     });
-}
-
-// Function to show quest details popup
-function showQuestPopup(quest) {
-    var popup = document.getElementById('quest-popup');
-    popup.style.display = 'block';
-    document.getElementById('popup-quest-name').textContent = quest.name;
-    document.getElementById('popup-quest-points').textContent = quest.points;
-    document.getElementById('popup-quest-info').textContent = quest.info;
-
-    // Set up buttons
-    document.getElementById('upload-picture').onclick = function() {
-        // Upload picture functionality
-    };
-    document.getElementById('mark-completed').onclick = function() {
-        completeQuest(quest);
-        popup.style.display = 'none';
-    };
-    document.getElementById('remove-quest').onclick = function() {
-        removeFromQuest(quest.id);
-        popup.style.display = 'none';
-    };
 }
 
 // Function to complete a quest
@@ -85,14 +112,9 @@ function updateProgress(points) {
 }
 
 // Function to filter quests by category
-function filterQuests() {
-    var filterCategory = document.getElementById('category-filter').value;
+function filterQuests(category) {
+    var filterCategory = category === 'All' ? null : category;
     loadQuests(filterCategory);
-}
-
-// Close popup function
-function closePopup() {
-    document.getElementById('quest-popup').style.display = 'none';
 }
 
 // Load quests and initialize progress on page load

@@ -4,16 +4,29 @@
     <title>My Quests</title>
     <meta charset="UTF-8">
     <!-- Include Custom CSS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Replace 'Open Sans' with your desired font -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="quest-page">
     <!-- Navigation Bar -->
     <nav id="navbar">
-        <ul>
-            <li><a href="index.html">Map</a></li>
-            <li><a href="quest.html">Quest</a></li>
-        </ul>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="logo.png" alt="Logo">
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html">Map</a></li>
+                <li><a href="quest.html">Quest</a></li>
+            </ul>
+        </div>
     </nav>
+
+    <div id="quest-header">
+        <h2>My Quests</h2>
+    </div>
 
     <!-- Progress Bar and Level Display -->
     <div id="progress-container">
@@ -25,23 +38,23 @@
 
     <!-- Quest Header Section -->
     <div id="quest-header">
-        <h2>My Quests</h2>
 
 
         <!-- Category Filter Dropdown -->
-        <label for="category-filter">Filter by Category:</label>
-        <select id="category-filter" onchange="filterQuests()">
-            <option value="">All</option>
-            <option value="Food">Food</option>
-            <option value="Outdoors">Outdoors</option>
-            <option value="Culture">Culture</option>
-            <option value="Social">Social</option>
-            <option value="Nightlife">Nightlife</option>
-            <option value="Hidden">Hidden</option>
-            <option value="Wellness">Wellness</option>
-            <option value="Shopping">Shopping</option>
-        </select>
+        <div id="filter-buttons">
+            <button onclick="filterQuests('All')">All</button>
+            <button onclick="filterQuests('Food')">Food</button>
+            <button onclick="filterQuests('Outdoors')">Outdoors</button>
+            <button onclick="filterQuests('Culture')">Culture</button>
+            <button onclick="filterQuests('Social')">Social</button>
+            <button onclick="filterQuests('Nightlife')">Nightlife</button>
+            <button onclick="filterQuests('Hidden')">Hidden</button>
+            <button onclick="filterQuests('Wellness')">Wellness</button>
+            <button onclick="filterQuests('Shopping')">Shopping</button>
+        </div>
     </div>
+
+    
 
     <!-- Quest List -->
     <div id="quest-list">
@@ -50,16 +63,6 @@
         </ul>
     </div>
 
-    <!-- Popup for Quest Details -->
-    <div id="quest-popup" class="popup">
-        <h3 id="popup-quest-name"></h3>
-        <p>Points: <span id="popup-quest-points"></span></p>
-        <p id="popup-quest-info"></p>
-        <button id="upload-picture">Upload Picture</button>
-        <button id="mark-completed">Mark as Completed</button>
-        <button id="remove-quest">Remove from Quest</button>
-        <button onclick="closePopup()">Close</button>
-    </div>
 
     <!-- Include Custom JS -->
     <script src="quest.js"></script>

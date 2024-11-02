@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <!-- Include Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <!-- Include Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- Replace 'Open Sans' with your desired font -->
@@ -12,6 +13,7 @@
     <!-- Include Custom CSS -->
     <link rel="stylesheet" href="styles.css">
 </head>
+<body>
     <!-- Navigation Bar -->
     <nav id="navbar">
         <div class="nav-container">
@@ -21,16 +23,38 @@
             <ul class="nav-menu">
                 <li><a href="index.html">Map</a></li>
                 <li><a href="quest.html">Quest</a></li>
-                <li><a href="#">Log Out</a></li>
+                <li><a href="#" class="logout-button">Log Out</a></li>
             </ul>
         </div>
     </nav>
 
-    <!-- Search Bar -->
-    <div id="search-bar">
-        <input type="text" id="postcode" placeholder="Enter Postcode">
-        <button id="search-btn">Search</button>
-        <button id="location-btn">Use Current Location</button>
+    <!-- Sidebar -->
+    <div id="sidebar">
+        <div class="sidebar-section">
+            <button id="location-btn">Use My Current Location</button>
+        </div>
+        <div class="sidebar-section">
+            <input type="text" id="postcode" placeholder="Enter Postcode">
+            <button id="search-btn">Search</button>
+        </div>
+        <div class="sidebar-section">
+            <h3>Filter by Categories</h3>
+            <div class="category-buttons">
+                <button class="category-btn" data-category="restaurant">Restaurants</button>
+                <button class="category-btn" data-category="landmark">Landmarks</button>
+                <button class="category-btn" data-category="nightlife">Nightlife</button>
+                <button class="category-btn" data-category="outdoor">Outdoor</button>
+                <!-- Add more categories as needed -->
+            </div>
+        </div>
+        <div class="sidebar-section">
+            <h3>Filter by Distance</h3>
+            <input type="range" id="distance-slider" min="500" max="5000" step="500" value="1000">
+            <span id="distance-value">1000m</span>
+        </div>
+        <div class="sidebar-section">
+            <button id="show-quests-btn">Show Me the Quests</button>
+        </div>
     </div>
 
     <!-- Map Container -->

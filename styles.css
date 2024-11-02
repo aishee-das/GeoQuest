@@ -58,31 +58,99 @@ body {
 }
 
 /* Quest List Styles */
+#progress-container {
+    display: flex;
+    align-items: center;
+    margin: 20px;
+    padding-top: 10px;
+}
+
+#current-level {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+#progress-bar-container {
+    flex-grow: 1;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    height: 20px;
+}
+
+#progress-bar {
+    width: 0%;
+    height: 100%;
+    background-color: #4caf50;
+    transition: width 0.3s;
+}
+
+/* Quest Header */
+#quest-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 20px;
+}
+
+/* Filter Dropdown */
+#category-filter {
+    padding: 5px;
+    font-size: 14px;
+    
+}
+
+/* Quest List and Diamond Styles */
 #quest-list {
     margin: 20px;
 }
 
-#quest-list h2 {
+/* Quest List Styles */
+#quests {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    list-style: none;
+    padding: 0;
+    gap: 20px;
+}
+
+.quest-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.quest-diamond {
+    width: 30px;
+    height: 30px;
+    background: #ffcc00;
+    transform: rotate(45deg); /* Diamond shape */
+    margin-right: 10px;
+    display: inline-block;
+    
+}
+
+.quest-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* Popup Styles */
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    background: white;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1001;
+    border-radius: 8px;
     text-align: center;
 }
 
-#quest-list ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-#quest-list li {
-    background: #f9f9f9;
-    margin-bottom: 10px;
-    padding: 15px;
-    border-radius: 5px;
-}
-
-#quest-list li h3 {
-    margin: 0 0 10px 0;
-}
-
-#quest-list li button {
-    padding: 5px 10px;
-    font-size: 14px;
-}

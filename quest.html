@@ -15,12 +15,50 @@
         </ul>
     </nav>
 
+    <!-- Progress Bar and Level Display -->
+    <div id="progress-container">
+        <span id="current-level">Level 1</span>
+        <div id="progress-bar-container">
+            <div id="progress-bar"></div>
+        </div>
+    </div>
+
+    <!-- Quest Header Section -->
+    <div id="quest-header">
+        <h2>My Quests</h2>
+
+
+        <!-- Category Filter Dropdown -->
+        <label for="category-filter">Filter by Category:</label>
+        <select id="category-filter" onchange="filterQuests()">
+            <option value="">All</option>
+            <option value="Food">Food</option>
+            <option value="Outdoors">Outdoors</option>
+            <option value="Culture">Culture</option>
+            <option value="Social">Social</option>
+            <option value="Nightlife">Nightlife</option>
+            <option value="Hidden">Hidden</option>
+            <option value="Wellness">Wellness</option>
+            <option value="Shopping">Shopping</option>
+        </select>
+    </div>
+
     <!-- Quest List -->
     <div id="quest-list">
-        <h2>My Quests</h2>
         <ul id="quests">
             <!-- Quests will be dynamically inserted here -->
         </ul>
+    </div>
+
+    <!-- Popup for Quest Details -->
+    <div id="quest-popup" class="popup">
+        <h3 id="popup-quest-name"></h3>
+        <p>Points: <span id="popup-quest-points"></span></p>
+        <p id="popup-quest-info"></p>
+        <button id="upload-picture">Upload Picture</button>
+        <button id="mark-completed">Mark as Completed</button>
+        <button id="remove-quest">Remove from Quest</button>
+        <button onclick="closePopup()">Close</button>
     </div>
 
     <!-- Include Custom JS -->

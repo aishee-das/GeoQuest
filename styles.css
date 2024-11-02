@@ -3,7 +3,98 @@ html, body {
     margin: 0;
     padding: 0;
     font-family: 'Open Sans', sans-serif; /* Apply the new font */
+    height: 100%; /* Ensure body takes full height */
 }
+
+/* Navigation Bar Styles */
+/* ... (existing navbar styles) ... */
+
+/* Sidebar Styles */
+#sidebar {
+    position: fixed;
+    top: 60px; /* Height of the navbar */
+    left: 0;
+    width: 250px; /* Adjust as needed */
+    height: calc(100% - 60px); /* Full height minus navbar */
+    background-color: #f4f4f4; /* Light background color */
+    overflow-y: auto; /* Enable scrolling if content overflows */
+    padding: 20px;
+    box-sizing: border-box;
+    border-right: 1px solid #ccc;
+}
+
+.sidebar-section {
+    margin-bottom: 20px;
+}
+
+.sidebar-section h3 {
+    margin-bottom: 10px;
+}
+
+.category-buttons {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.category-btn {
+    padding: 8px 12px;
+    margin: 5px;
+    background-color: #e0e0e0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    flex: 1 0 45%; /* Adjust the buttons to fit nicely */
+    text-align: center;
+}
+
+.category-btn.active {
+    background-color: #3973b6;
+    color: #fff;
+}
+
+.category-btn:hover {
+    background-color: #d5d5d5;
+}
+
+#distance-slider {
+    width: 100%;
+}
+
+#distance-value {
+    display: block;
+    text-align: center;
+    margin-top: 5px;
+}
+
+#show-quests-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #3973b6;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#show-quests-btn:hover {
+    background-color: #2e5a90;
+}
+
+/* Map Container Styles */
+#map {
+    position: absolute;
+    top: 60px; /* Height of the navbar */
+    left: 250px; /* Width of the sidebar */
+    width: calc(100% - 250px); /* Full width minus sidebar */
+    height: calc(100% - 60px); /* Full height minus navbar */
+}
+
+/* Adjust body margin */
+body {
+    margin: 0;
+}
+
 
 /* Navigation Bar Styles */
 #navbar {
@@ -80,56 +171,4 @@ html, body {
 .nav-menu li a:active {
     background-color: #c0c0c0; /* Active background color */
     color: #000; /* Active text color */
-}
-
-/* Search Bar Styles */
-#search-bar {
-    position: absolute;
-    top: 60px; /* Adjusted to appear below the navbar */
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1000;
-    display: flex;
-}
-
-#search-bar input,
-#search-bar button {
-    padding: 5px;
-    font-size: 16px;
-}
-
-/* Map Container Styles */
-#map {
-    height: calc(100vh - 60px); /* Adjusted to account for navbar height */
-    width: 100%;
-}
-
-/* Quest List Styles */
-#quest-list {
-    margin: 20px;
-}
-
-#quest-list h2 {
-    text-align: center;
-}
-
-#quest-list ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-#quest-list li {
-    background: #f9f9f9;
-    margin-bottom: 10px;
-    padding: 15px;
-    border-radius: 5px;
-}
-
-#quest-list li h3 {
-    margin: 0 0 10px 0;
-}
-
-#quest-list li button {
-    padding: 5px 10px;
-    font-size: 14px;
 }

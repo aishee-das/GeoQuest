@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="quest-page">
     <!-- Navigation Bar -->
     <nav id="navbar">
         <div class="nav-container">
@@ -24,13 +24,45 @@
         </div>
     </nav>
 
+    <div id="quest-header">
+        <h2>My Quests</h2>
+    </div>
+
+    <!-- Progress Bar and Level Display -->
+    <div id="progress-container">
+        <span id="current-level">Level 1</span>
+        <div id="progress-bar-container">
+            <div id="progress-bar"></div>
+        </div>
+    </div>
+
+    <!-- Quest Header Section -->
+    <div id="quest-header">
+
+
+        <!-- Category Filter Dropdown -->
+        <div id="filter-buttons">
+            <button onclick="filterQuests('All')">All</button>
+            <button onclick="filterQuests('Food')">Food</button>
+            <button onclick="filterQuests('Outdoors')">Outdoors</button>
+            <button onclick="filterQuests('Culture')">Culture</button>
+            <button onclick="filterQuests('Social')">Social</button>
+            <button onclick="filterQuests('Nightlife')">Nightlife</button>
+            <button onclick="filterQuests('Hidden')">Hidden</button>
+            <button onclick="filterQuests('Wellness')">Wellness</button>
+            <button onclick="filterQuests('Shopping')">Shopping</button>
+        </div>
+    </div>
+
+    
+
     <!-- Quest List -->
     <div id="quest-list">
-        <h2>My Quests</h2>
         <ul id="quests">
             <!-- Quests will be dynamically inserted here -->
         </ul>
     </div>
+
 
     <!-- Include Custom JS -->
     <script src="quest.js"></script>

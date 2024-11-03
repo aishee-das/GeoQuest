@@ -68,20 +68,39 @@ distanceSlider.addEventListener('input', function () {
     distanceValue.textContent = this.value + 'm';
 });
 
+// // Event listeners for category buttons
+// var categoryButtons = document.querySelectorAll('.category-btn');
+// categoryButtons.forEach(function (button) {
+//     button.addEventListener('click', function () {
+//         // Toggle active class
+//         this.classList.toggle('active');
+//         var category = this.getAttribute('data-category');
+//         if (this.classList.contains('active')) {
+//             selectedCategories.push(category);
+//         } else {
+//             selectedCategories = selectedCategories.filter(function (item) {
+//                 return item !== category;
+//             });
+//         }
+//     });
+// });
+
 // Event listeners for category buttons
 var categoryButtons = document.querySelectorAll('.category-btn');
 categoryButtons.forEach(function (button) {
     button.addEventListener('click', function () {
-        // Toggle active class
         this.classList.toggle('active');
         var category = this.getAttribute('data-category');
+
+        // Toggle category in the selectedCategories array
         if (this.classList.contains('active')) {
             selectedCategories.push(category);
         } else {
-            selectedCategories = selectedCategories.filter(function (item) {
-                return item !== category;
-            });
+            selectedCategories = selectedCategories.filter(item => item !== category);
         }
+
+        // **Save selectedCategories in localStorage** each time it updates
+        localStorage.setItem('selectedCategories', JSON.stringify(selectedCategories));
     });
 });
 
@@ -166,7 +185,6 @@ function fetchPOIs(lat, lon, categories, radius) {
         .catch(error => console.error('Error:', error));
 }
 
-// Function to add markers to the map
 function addMarkers(pois) {
     pois.forEach(poi => {
         let lat, lon;
@@ -174,37 +192,61 @@ function addMarkers(pois) {
             lat = poi.lat;
             lon = poi.lon;
         } else if (poi.type === 'way' || poi.type === 'relation') {
-            // For ways and relations, use the centroid
             if (poi.center) {
                 lat = poi.center.lat;
                 lon = poi.center.lon;
             } else {
-                // If no center is provided, skip this element
-                return;
+                return; // Skip if no center is provided
             }
         } else {
-            // Unknown type, skip
-            return;
+            return; // Skip unknown type
         }
 
         var marker = L.marker([lat, lon]).addTo(map);
         var name = poi.tags.name || 'Unnamed Place';
+
+        // Set category based on known tags (e.g., "amenity", "tourism", "historic")
+        var category = 'Other'; // Default category if none match
+        if (poi.tags.amenity === 'restaurant') {
+            category = 'restaurant';
+        } else if (poi.tags.tourism === 'attraction') {
+            category = 'landmark';
+        } else if (poi.tags.historic) {
+            category = 'landmark';
+        } else if (poi.tags.shop) {
+            category = 'shopping';
+        } else if (poi.tags.leisure) {
+            category = 'wellbeing';
+        }
+
+        console.log(`POI Name: ${name}, Category: ${category}`);
+        // Pass the category to addToQuest
         var popupContent = `<b>${name}</b><br>
-            <button onclick="addToQuest('${poi.type}_${poi.id}', '${name.replace(/'/g, "\\'")}')">Add to Quest</button>`;
+            <button onclick="addToQuest('${poi.type}_${poi.id}', '${name.replace(/'/g, "\\'")}', '${category}')">Add to Quest</button>`;
         marker.bindPopup(popupContent);
         markers.push(marker);
     });
 }
 
 
-// Function to add POI to quest page
-function addToQuest(id, name) {
+
+function addToQuest(id, name, category) {
     var quests = JSON.parse(localStorage.getItem('quests')) || [];
+    
+    // Check if the quest already exists by ID
     if (!quests.find(q => q.id === id)) {
-        quests.push({ id: id, name: name });
+        // Create a new quest object
+        const newQuest = { id: id, name: name, category: category }; // Ensure this line is here
+
+        // Print the quest object to verify data before adding
+        console.log("Adding Quest:", newQuest);
+
+        // Add the quest to the list and store in localStorage
+        quests.push(newQuest);
         localStorage.setItem('quests', JSON.stringify(quests));
         alert(`${name} has been added to your quest!`);
     } else {
         alert(`${name} is already in your quest.`);
     }
 }
+

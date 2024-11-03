@@ -68,38 +68,33 @@ distanceSlider.addEventListener('input', function () {
     distanceValue.textContent = this.value + 'm';
 });
 
-// // Event listeners for category buttons
-// var categoryButtons = document.querySelectorAll('.category-btn');
-// categoryButtons.forEach(function (button) {
-//     button.addEventListener('click', function () {
-//         // Toggle active class
-//         this.classList.toggle('active');
-//         var category = this.getAttribute('data-category');
-//         if (this.classList.contains('active')) {
-//             selectedCategories.push(category);
-//         } else {
-//             selectedCategories = selectedCategories.filter(function (item) {
-//                 return item !== category;
-//             });
-//         }
-//     });
-// });
-
-// Event listeners for category buttons
+// Event listeners for category buttons (restrict to one category at a time)
 var categoryButtons = document.querySelectorAll('.category-btn');
 categoryButtons.forEach(function (button) {
     button.addEventListener('click', function () {
-        this.classList.toggle('active');
         var category = this.getAttribute('data-category');
 
-        // Toggle category in the selectedCategories array
         if (this.classList.contains('active')) {
-            selectedCategories.push(category);
+            // If this button is already active, deselect it
+            this.classList.remove('active');
+            selectedCategories = [];
         } else {
-            selectedCategories = selectedCategories.filter(item => item !== category);
+            // Remove 'active' class from all buttons
+            categoryButtons.forEach(function (btn) {
+                btn.classList.remove('active');
+            });
+
+            // Clear selectedCategories array
+            selectedCategories = [];
+
+            // Add 'active' class to the clicked button
+            this.classList.add('active');
+
+            // Add the selected category to selectedCategories array
+            selectedCategories.push(category);
         }
 
-        // **Save selectedCategories in localStorage** each time it updates
+        // Save selectedCategories in localStorage
         localStorage.setItem('selectedCategories', JSON.stringify(selectedCategories));
     });
 });
@@ -133,57 +128,81 @@ function addCircle(lat, lon, radius) {
 // Function to fetch Points of Interest (POIs) using Overpass API
 function fetchPOIs(lat, lon, categories, radius) {
     // Remove existing markers
-    if (markers.length > 0) {
-        markers.forEach(marker => {
-            map.removeLayer(marker);
-        });
-        markers = [];
-    }
+    markers.forEach(marker => map.removeLayer(marker));
+    markers = [];
 
     if (categories.length === 0) {
         // If no categories selected, default to 'restaurant'
         categories = ['restaurant'];
     }
 
-    // Build Overpass API query for selected categories
-    var overpassQueries = categories.map(function (category) {
-        if (category === 'restaurant') {
-            return `node["amenity"="restaurant"][name](around:${radius},${lat},${lon});`;
-        } else if (category === 'landmark') {
-            // Fetch elements with 'historic' or 'tourism=attraction' AND with a 'name' tag
-            return `
-                (
-                    node["historic"][name](around:${radius},${lat},${lon});
-                    node["tourism"="attraction"][name](around:${radius},${lat},${lon});
-                    way["historic"][name](around:${radius},${lat},${lon});
-                    way["tourism"="attraction"][name](around:${radius},${lat},${lon});
-                    relation["historic"][name](around:${radius},${lat},${lon});
-                    relation["tourism"="attraction"][name](around:${radius},${lat},${lon});
-                );
-            `;
-        }
-        // ... (handle other categories)
-    }).join('');
+    // Since only one category can be selected at a time
+    var category = categories[0];
 
-    var query = `[out:json];
-        ${overpassQueries}
-        out center;
-    `;
+    var overpassQuery = '';
+
+    if (category === 'restaurant') {
+        overpassQuery = `
+            [out:json];
+            node["amenity"="restaurant"][name](around:${radius},${lat},${lon});
+            out center;
+        `;
+    } else if (category === 'landmark') {
+        overpassQuery = `
+            [out:json];
+            (
+                node["historic"][name](around:${radius},${lat},${lon});
+                node["tourism"="attraction"][name](around:${radius},${lat},${lon});
+                way["historic"][name](around:${radius},${lat},${lon});
+                way["tourism"="attraction"][name](around:${radius},${lat},${lon});
+                relation["historic"][name](around:${radius},${lat},${lon});
+                relation["tourism"="attraction"](around:${radius},${lat},${lon});
+            );
+            out center;
+        `;
+    } else if (category === 'nightlife') {
+        overpassQuery = `
+            [out:json];
+            (
+                node["amenity"="pub"][name](around:${radius},${lat},${lon});
+                node["amenity"="bar"][name](around:${radius},${lat},${lon});
+                node["amenity"="nightclub"][name](around:${radius},${lat},${lon});
+                node["amenity"="casino"][name](around:${radius},${lat},${lon});
+                way["amenity"="pub"][name](around:${radius},${lat},${lon});
+                way["amenity"="bar"][name](around:${radius},${lat},${lon});
+                way["amenity"="nightclub"][name](around:${radius},${lat},${lon});
+                way["amenity"="casino"][name](around:${radius},${lat},${lon});
+                relation["amenity"="pub"][name](around:${radius},${lat},${lon});
+                relation["amenity"="bar"][name](around:${radius},${lat},${lon});
+                relation["amenity"="nightclub"][name](around:${radius},${lat},${lon});
+                relation["amenity"="casino"][name](around:${radius},${lat},${lon});
+            );
+            out center;
+        `;
+    } else {
+        // Handle other categories if needed
+    }
 
     fetch('https://overpass-api.de/api/interpreter', {
         method: 'POST',
-        body: query
+        body: overpassQuery
     })
         .then(response => response.json())
         .then(data => {
             if (data.elements.length === 0) {
-                alert('No landmarks found within the current radius. Please increase the radius or select a different location.');
+                let message = `No ${category}s found within the current radius. Please increase the radius or select a different location.`;
+                alert(message);
             } else {
+                // Assign category to each POI
+                data.elements.forEach(poi => {
+                    poi.category = category;
+                });
                 addMarkers(data.elements);
             }
         })
         .catch(error => console.error('Error:', error));
 }
+
 
 function addMarkers(pois) {
     pois.forEach(poi => {
@@ -205,24 +224,24 @@ function addMarkers(pois) {
         var marker = L.marker([lat, lon]).addTo(map);
         var name = poi.tags.name || 'Unnamed Place';
 
-        // Set category based on known tags (e.g., "amenity", "tourism", "historic")
-        var category = 'Other'; // Default category if none match
-        if (poi.tags.amenity === 'restaurant') {
-            category = 'restaurant';
-        } else if (poi.tags.tourism === 'attraction') {
-            category = 'landmark';
-        } else if (poi.tags.historic) {
-            category = 'landmark';
-        } else if (poi.tags.shop) {
-            category = 'shopping';
-        } else if (poi.tags.leisure) {
-            category = 'wellbeing';
-        }
+        // Use the category assigned in fetchPOIs
+        var category = poi.category || 'Other';
 
-        console.log(`POI Name: ${name}, Category: ${category}`);
-        // Pass the category to addToQuest
-        var popupContent = `<b>${name}</b><br>
-            <button onclick="addToQuest('${poi.type}_${poi.id}', '${name.replace(/'/g, "\\'")}', '${category}')">Add to Quest</button>`;
+        // Capitalize the first letter of the category
+        let categoryDisplayName = category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
+
+        // Create the category tag as a button
+        let categoryTag = `<button class="category-tag">${categoryDisplayName}</button>`;
+
+        // Build the popup content
+        var popupContent = `
+            <div class="popup-content">
+                <b class="poi-name">${name}</b>
+                ${categoryTag}
+                <button class="add-to-quest-btn" onclick="addToQuest('${poi.type}_${poi.id}', '${name.replace(/'/g, "\\'")}', '${category}')">Add to Quest</button>
+            </div>
+        `;
+
         marker.bindPopup(popupContent);
         markers.push(marker);
     });
@@ -230,16 +249,14 @@ function addMarkers(pois) {
 
 
 
-function addToQuest(id, name, category) {
+
+function addToQuest(id, name, category, points = 10) { //default points = 10 
     var quests = JSON.parse(localStorage.getItem('quests')) || [];
     
     // Check if the quest already exists by ID
     if (!quests.find(q => q.id === id)) {
         // Create a new quest object
-        const newQuest = { id: id, name: name, category: category }; // Ensure this line is here
-
-        // Print the quest object to verify data before adding
-        console.log("Adding Quest:", newQuest);
+        const newQuest = { id: id, name: name, category: category, points: points }; // Ensure this line is here
 
         // Add the quest to the list and store in localStorage
         quests.push(newQuest);
@@ -249,4 +266,3 @@ function addToQuest(id, name, category) {
         alert(`${name} is already in your quest.`);
     }
 }
-

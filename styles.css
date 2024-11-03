@@ -342,3 +342,50 @@ body {
     color: #094067; /* Headline color for text on hover */
 }
 
+/* Category Tag Button Styles */
+.category-tag {
+    background-color: #e0e0e0; /* Grey background */
+    color: #000; /* Black text */
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 12px;
+    margin-top: 5px;
+    cursor: default; /* Indicate that it's not clickable */
+}
+
+.category-tag:hover {
+    background-color: #e0e0e0; /* No hover effect */
+}
+
+/* Add to Quest Button Styles */
+.add-to-quest-btn {
+    background-color: #3973b6; /* Blue background */
+    color: #fff; /* White text */
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 10px; /* Adds space above the button */
+    display: block; /* Ensure it starts on a new line */
+}
+
+/* Hover effect for Add to Quest button */
+.add-to-quest-btn:hover {
+    background-color: #2e5a90;
+}
+
+/* Popup Content Styles */
+.popup-content b {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.popup-content .category-tag {
+    margin-bottom: 10px; /* Space between category tag and Add to Quest button */
+}
+
+.popup-content .add-to-quest-btn {
+    /* Existing styles */
+}

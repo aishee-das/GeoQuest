@@ -208,10 +208,10 @@ function addMarkers(pois) {
             category = 'landmark';
         } else if (poi.tags.historic) {
             category = 'landmark';
-        } else if (poi.tags.shop) {
-            category = 'shopping';
-        } else if (poi.tags.leisure) {
-            category = 'wellbeing';
+        // } else if (poi.tags.shop) {
+        //     category = 'shopping';
+        // } else if (poi.tags.leisure) {
+        //     category = 'wellbeing';
         }
 
        // Capitalize the first letter of the category
@@ -232,13 +232,15 @@ function addMarkers(pois) {
     });
 }
 
-function addToQuest(id, name, category) {
+
+
+function addToQuest(id, name, category, points = 10) { //default points = 10 
     var quests = JSON.parse(localStorage.getItem('quests')) || [];
     
     // Check if the quest already exists by ID
     if (!quests.find(q => q.id === id)) {
         // Create a new quest object
-        const newQuest = { id: id, name: name, category: category };
+        const newQuest = { id: id, name: name, category: category, points: points }; // Ensure this line is here
 
         // Add the quest to the list and store in localStorage
         quests.push(newQuest);

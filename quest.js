@@ -1,5 +1,5 @@
-var currentPoints = 0; // **Points accumulated so far**
-var currentLevel = 1; // **Starting level**
+var currentPoints = parseInt(localStorage.getItem('currentPoints')) || 0; // Load accumulated points from localStorage
+var currentLevel = parseInt(localStorage.getItem('currentLevel')) || 1; // Load current level from localStorage
 const pointsPerLevel = 100; // **Points required to level up**
 
 // Function to load quests from localStorage
@@ -24,6 +24,10 @@ function loadQuests(filterCategory = null) {
     quests.forEach(quest => {
         var listItem = document.createElement('li');
         listItem.className = 'quest-item'; // Add a class to style quest items
+
+    
+        // console.log(`Quest Name: ${quest.name}, Category: ${quest.category}`); // This should show the correct category
+
         
         var diamondContainer = document.createElement('div');
         diamondContainer.className = 'diamond-container';
@@ -80,16 +84,15 @@ function loadQuests(filterCategory = null) {
     });
 }
 
-// Function to complete a quest
 function completeQuest(quest) {
     var quests = JSON.parse(localStorage.getItem('quests')) || [];
     quests = quests.filter(q => q.id !== quest.id); // Remove from quest list
     localStorage.setItem('quests', JSON.stringify(quests));
-    updateProgress(quest.points); // Update progress bar
-    loadQuests();
+
+    updateProgress(quest.points); // Update progress bar and level
+    loadQuests(); // Reload quests
 }
 
-// Function to update progress bar and handle levels
 function updateProgress(points) {
     currentPoints += points;
     var progressPercent = (currentPoints % pointsPerLevel) / pointsPerLevel * 100;
@@ -100,6 +103,8 @@ function updateProgress(points) {
         currentLevel++;
         document.getElementById('current-level').textContent = "Level " + currentLevel;
     }
+    localStorage.setItem('currentPoints', currentPoints);
+    localStorage.setItem('currentLevel', currentLevel);
 }
 
 // Function to filter quests by category
@@ -120,4 +125,7 @@ function removeFromQuest(id) {
 window.onload = function() {
     loadQuests();
     document.getElementById('current-level').textContent = "Level " + currentLevel;
+    var progressPercent = (currentPoints % pointsPerLevel) / pointsPerLevel * 100;
+    document.getElementById('progress-bar').style.width = progressPercent + '%';
 };
+

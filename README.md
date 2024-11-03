@@ -1,4 +1,4 @@
-# GeoQuest Adventure Map
+# GeoQuest
 
 GeoQuest is a gamified travel experience that encourages users to explore various locations by completing "quests." Users can earn points, unlock virtual badges, and track their progress, making travel both interactive and rewarding.
 

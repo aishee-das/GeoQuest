@@ -68,22 +68,6 @@ distanceSlider.addEventListener('input', function () {
     distanceValue.textContent = this.value + 'm';
 });
 
-// // Event listeners for category buttons
-// var categoryButtons = document.querySelectorAll('.category-btn');
-// categoryButtons.forEach(function (button) {
-//     button.addEventListener('click', function () {
-//         // Toggle active class
-//         this.classList.toggle('active');
-//         var category = this.getAttribute('data-category');
-//         if (this.classList.contains('active')) {
-//             selectedCategories.push(category);
-//         } else {
-//             selectedCategories = selectedCategories.filter(function (item) {
-//                 return item !== category;
-//             });
-//         }
-//     });
-// });
 
 // Event listeners for category buttons
 var categoryButtons = document.querySelectorAll('.category-btn');
@@ -213,13 +197,11 @@ function addMarkers(pois) {
             category = 'landmark';
         } else if (poi.tags.historic) {
             category = 'landmark';
-        } else if (poi.tags.shop) {
-            category = 'shopping';
-        } else if (poi.tags.leisure) {
-            category = 'wellbeing';
+        // } else if (poi.tags.shop) {
+        //     category = 'shopping';
+        // } else if (poi.tags.leisure) {
+        //     category = 'wellbeing';
         }
-
-        console.log(`POI Name: ${name}, Category: ${category}`);
         // Pass the category to addToQuest
         var popupContent = `<b>${name}</b><br>
             <button onclick="addToQuest('${poi.type}_${poi.id}', '${name.replace(/'/g, "\\'")}', '${category}')">Add to Quest</button>`;
@@ -230,16 +212,13 @@ function addMarkers(pois) {
 
 
 
-function addToQuest(id, name, category) {
+function addToQuest(id, name, category, points = 10) { //default points = 10 
     var quests = JSON.parse(localStorage.getItem('quests')) || [];
     
     // Check if the quest already exists by ID
     if (!quests.find(q => q.id === id)) {
         // Create a new quest object
-        const newQuest = { id: id, name: name, category: category }; // Ensure this line is here
-
-        // Print the quest object to verify data before adding
-        console.log("Adding Quest:", newQuest);
+        const newQuest = { id: id, name: name, category: category, points: points }; // Ensure this line is here
 
         // Add the quest to the list and store in localStorage
         quests.push(newQuest);

@@ -1,3 +1,14 @@
+<?php
+
+    // We need to use sessions, so you should always start sessions using the below code.
+    session_start();
+
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    // Include functions and connect to the database using PDO MySQL
+    include "functions.php";
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,32 +25,21 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    
     <!-- Navigation Bar -->
-    <nav id="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="logo">
-                <img src="logo.png" alt="Logo">
-            </a>
-            <ul class="nav-menu">
-                <li><a href="index.html">Map</a></li>
-                <li><a href="quest.html">Quest</a></li>
-                <li><a href="#" class="logout-button">Log Out</a></li>
-            </ul>
-        </div>
-    </nav>
+    <?php displayNavBar(); ?>
 
     <!-- Sidebar -->
     <div id="sidebar">
         <div class="sidebar-section">
-            <button id="location-btn">Use My Current Location</button>
+            <button id="location-btn">➤ Use Current Location</button>
         </div>
         <div class="sidebar-section">
-            <input type="text" id="postcode" placeholder="Enter Postcode">
-            <button id="search-btn">Search</button>
+            <input type="text" id="postcode" placeholder="Enter Location">
+            <button id="search-btn">Set Region</button>
         </div>
         <div class="sidebar-section">
             <h3>Filter by Categories</h3>
-            <p>Choose 1 category</p>
             <div class="category-buttons">
                 <button class="category-btn" data-category="restaurant">Restaurants</button>
                 <button class="category-btn" data-category="landmark">Landmarks</button>
@@ -65,5 +65,10 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <!-- Include Custom JS -->
     <script src="script.js"></script>
+
+    <?php
+    // Display the footer
+    displayFooter();
+    ?>
 </body>
 </html>

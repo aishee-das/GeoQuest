@@ -24,7 +24,7 @@ function geocodePostcode(postcode) {
                 currentLon = parseFloat(data[0].lon);
                 alert(`Location set to: ${data[0].display_name}`);
             } else {
-                alert('Postcode not found!');
+                alert('Location not found!');
             }
         })
         .catch(error => console.error('Error:', error));
@@ -106,7 +106,7 @@ document.getElementById('show-quests-btn').addEventListener('click', function ()
         addCircle(currentLat, currentLon, searchRadius);
         fetchPOIs(currentLat, currentLon, selectedCategories, searchRadius);
     } else {
-        alert('Please set your location using "Use My Current Location" or "Enter Postcode".');
+        alert('Please set your location using "Use My Current Location" or "Set Location".');
     }
 });
 

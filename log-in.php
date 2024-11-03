@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Register</title>
+    <title>Log In</title>
 
     <meta charset="UTF-8">
     <!-- Include Leaflet CSS -->
@@ -28,24 +28,15 @@
         include 'functions.php';
         logged_out_nav_bar();
     ?>
-    <form action="register-user.php" method="post">
-    <h2>Register</h2>
-        <label for="email">Email:</label><br>
+    <form action="log-in-user.php" method="post">
+    <h2>Log In</h2>
+        <label for="email">Email/Username:</label><br>
         <input type="email" id="email" name="email" required><br><br>
-
-        <label for="username">Username:</label><br>
-        <input type="username" id="username" name="username" required><br><br>
-
-        <label for="forename">First Name:</label><br>
-        <input type="forename" id="forename" name="forename" required><br><br>
-
-        <label for="surname">Surname:</label><br>
-        <input type="surname" id="surname" name="surname" required><br><br>
         
         <label for="password">Password:</label><br>
         <input type="password" id="password" name="password" required><br><br>
         
-        <input type="submit" value="Register">
+        <input type="submit" value="Log in">
     </form>
 
     <?php

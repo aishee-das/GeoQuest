@@ -342,3 +342,18 @@ body {
     color: #094067; /* Headline color for text on hover */
 }
 
+/* Category Tag Button Styles */
+.category-tag {
+    background-color: #e0e0e0; /* Grey background */
+    color: #000; /* Black text */
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 12px;
+    margin-top: 5px;
+    cursor: default; /* Indicate that it's not clickable */
+}
+
+.category-tag:hover {
+    background-color: #e0e0e0; /* No hover effect */
+}

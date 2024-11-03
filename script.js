@@ -68,38 +68,33 @@ distanceSlider.addEventListener('input', function () {
     distanceValue.textContent = this.value + 'm';
 });
 
-// // Event listeners for category buttons
-// var categoryButtons = document.querySelectorAll('.category-btn');
-// categoryButtons.forEach(function (button) {
-//     button.addEventListener('click', function () {
-//         // Toggle active class
-//         this.classList.toggle('active');
-//         var category = this.getAttribute('data-category');
-//         if (this.classList.contains('active')) {
-//             selectedCategories.push(category);
-//         } else {
-//             selectedCategories = selectedCategories.filter(function (item) {
-//                 return item !== category;
-//             });
-//         }
-//     });
-// });
-
-// Event listeners for category buttons
+// Event listeners for category buttons (restrict to one category at a time)
 var categoryButtons = document.querySelectorAll('.category-btn');
 categoryButtons.forEach(function (button) {
     button.addEventListener('click', function () {
-        this.classList.toggle('active');
         var category = this.getAttribute('data-category');
 
-        // Toggle category in the selectedCategories array
         if (this.classList.contains('active')) {
-            selectedCategories.push(category);
+            // If this button is already active, deselect it
+            this.classList.remove('active');
+            selectedCategories = [];
         } else {
-            selectedCategories = selectedCategories.filter(item => item !== category);
+            // Remove 'active' class from all buttons
+            categoryButtons.forEach(function (btn) {
+                btn.classList.remove('active');
+            });
+
+            // Clear selectedCategories array
+            selectedCategories = [];
+
+            // Add 'active' class to the clicked button
+            this.classList.add('active');
+
+            // Add the selected category to selectedCategories array
+            selectedCategories.push(category);
         }
 
-        // **Save selectedCategories in localStorage** each time it updates
+        // Save selectedCategories in localStorage
         localStorage.setItem('selectedCategories', JSON.stringify(selectedCategories));
     });
 });
@@ -177,7 +172,7 @@ function fetchPOIs(lat, lon, categories, radius) {
         .then(response => response.json())
         .then(data => {
             if (data.elements.length === 0) {
-                alert('No landmarks found within the current radius. Please increase the radius or select a different location.');
+                alert('No points of interest found within the current radius. Please increase the radius or select a different location.');
             } else {
                 addMarkers(data.elements);
             }
@@ -219,16 +214,23 @@ function addMarkers(pois) {
             category = 'wellbeing';
         }
 
-        console.log(`POI Name: ${name}, Category: ${category}`);
-        // Pass the category to addToQuest
-        var popupContent = `<b>${name}</b><br>
-            <button onclick="addToQuest('${poi.type}_${poi.id}', '${name.replace(/'/g, "\\'")}', '${category}')">Add to Quest</button>`;
+       // Capitalize the first letter of the category
+       let categoryDisplayName = category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
+
+       // Create the category tag as a button
+       let categoryTag = `<button class="category-tag">${categoryDisplayName}</button>`;
+
+        // Build the popup content
+        var popupContent = `
+            <b>${name}</b><br>
+            ${categoryTag}<br>
+            <button onclick="addToQuest('${poi.type}_${poi.id}', '${name.replace(/'/g, "\\'")}', '${category}')">Add to Quest</button>
+        `;
+
         marker.bindPopup(popupContent);
         markers.push(marker);
     });
 }
-
-
 
 function addToQuest(id, name, category) {
     var quests = JSON.parse(localStorage.getItem('quests')) || [];
@@ -236,10 +238,7 @@ function addToQuest(id, name, category) {
     // Check if the quest already exists by ID
     if (!quests.find(q => q.id === id)) {
         // Create a new quest object
-        const newQuest = { id: id, name: name, category: category }; // Ensure this line is here
-
-        // Print the quest object to verify data before adding
-        console.log("Adding Quest:", newQuest);
+        const newQuest = { id: id, name: name, category: category };
 
         // Add the quest to the list and store in localStorage
         quests.push(newQuest);
@@ -249,4 +248,3 @@ function addToQuest(id, name, category) {
         alert(`${name} is already in your quest.`);
     }
 }
-

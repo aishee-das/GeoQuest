@@ -14,17 +14,17 @@ GeoQuest is a gamified travel experience that encourages users to explore variou
 ### Log In
 A secure login screen with options to register for a new account.
 
-![Log In Screen](https://github.com/t3rryhuang/DurHack2024/blob/main/screenshots/log-in.png?raw=true)
+![Log In Screen](https://github.com/t3rryhuang/GeoQuest/blob/main/screenshots/log-in.png?raw=true)
 
 ### Map Interface
 Filter quests based on categories and distance from your current location or a selected region.
 
-![Map Interface](https://github.com/t3rryhuang/DurHack2024/blob/main/screenshots/map.png?raw=true)
+![Map Interface](https://github.com/t3rryhuang/GeoQuest/blob/main/screenshots/map.png?raw=true)
 
 ### Quest Dashboard
 View your quests, sorted by categories. Complete quests, upload pictures, or remove quests as you progress.
 
-![Quest Dashboard](https://github.com/t3rryhuang/DurHack2024/blob/main/screenshots/my-quests.png?raw=true)
+![Quest Dashboard](https://github.com/t3rryhuang/GeoQuest/blob/main/screenshots/my-quests.png?raw=true)
 
 ## How It Works
 
